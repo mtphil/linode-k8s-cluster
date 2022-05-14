@@ -7,21 +7,6 @@ terraform {
     }
 }
 
-terraform {
-  required_providers {
-    vault = {
-      source = "hashicorp/vault"
-      version = "3.5.0"
-    }
-  }
-}
-
-provider "vault" {
-  address = var.vault_address
-  namespace = var.vault_namespace
-  token = var.VAULT_LINODE_API_KEY_TOKEN
-}
-
 provider "linode" {
     token = var.LINODE_KUBERNETES_API_TOKEN
 }

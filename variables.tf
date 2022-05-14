@@ -1,18 +1,6 @@
-variable vault_address {
-    description = "The URL for the remote Vault server"
-}
-
-variable vault_namespace {
-    description = "The Vault namespace to use"
-}
-
-variable VAULT_TOKEN {
+variable LINODE_KUBERNETES_API_TOKEN {
     description = "Vault token to use for authentication"
     type = string
-}
-
-variable "token" {
-    description = "Your Linode API Personal Access Token. (required)"
 }
 
 variable "k8s_version" {
