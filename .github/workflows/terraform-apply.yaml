@@ -1,0 +1,33 @@
+name: deploy_terraform_to_linode
+on:   
+  push:
+    branches:
+    - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: deploy_terraform_to_linode
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: hashicorp/vault-action@v2.4.0
+        with:
+          url: https://vault-cluster.vault.f7138e83-ed41-4970-8209-2d60a69c6a0f.aws.hashicorp.cloud:8200
+          tlsSkipVerify: true
+          token: \${{ secrets.VAULT_LINODE_API_KEY_TOKEN }}
+          secrets: |
+            secret/data/linode_kubernetes_api_token LINODE_KUBERNETES_API_TOKEN
+      - name: Terraform Init
+        uses: hashicorp/setup-terraform@v2
+        run: terraform init
+      - name: Terraform Format
+        run: terraform fmt -check
+      - name: Terraform Plan
+        run: terraform plan -input=false
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve -input=false

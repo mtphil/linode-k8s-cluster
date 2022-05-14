@@ -19,11 +19,11 @@ terraform {
 provider "vault" {
   address = var.vault_address
   namespace = var.vault_namespace
-  token = var.VAULT_TOKEN
+  token = var.VAULT_LINODE_API_KEY_TOKEN
 }
 
 provider "linode" {
-    token = var.token
+    token = var.LINODE_KUBERNETES_API_TOKEN
 }
 
 resource "linode_lke_cluster" "foobar" {
@@ -60,33 +60,4 @@ output "id" {
 
 output "pool" {
     value = linode_lke_cluster.foobar.pool
-}
-
-variable "name" { default = "dynamic-aws-creds-operator" }
-variable "path" { default = "../vault-admin-workspace/terraform.tfstate" }
-variable "ttl" { default = "1" }
-
-terraform {
-  backend "local" {
-    path = "terraform.tfstate"
-  }
-}
-
-data "terraform_remote_state" "admin" {
-  backend = "local"
-
-  config = {
-    path = var.path
-  }
-}
-
-data "vault_aws_access_credentials" "creds" {
-  backend = data.terraform_remote_state.admin.outputs.backend
-  role    = data.terraform_remote_state.admin.outputs.role
-}
-
-provider "aws" {
-  region     = var.region
-  access_key = data.vault_aws_access_credentials.creds.access_key
-  secret_key = data.vault_aws_access_credentials.creds.secret_key
 }
