@@ -7,6 +7,14 @@ terraform {
   }
 }
 
+terraform {
+  backend "consul" {
+    address = "https://consul-cluster.consul.f7138e83-ed41-4970-8209-2d60a69c6a0f.aws.hashicorp.cloud"
+    scheme  = "https"
+    path    = "yoyodynecorp/terraform_state"
+  }
+}
+
 provider "linode" {
   token = var.LINODE_KUBERNETES_API_TOKEN
 }

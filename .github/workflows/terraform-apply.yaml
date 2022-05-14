@@ -21,16 +21,17 @@ jobs:
           tlsSkipVerify: true
           method: token
           namespace: admin/yoyodynecorp
-          token: ${{ secrets.VAULT_LINODE_API_KEY_TOKEN }}
+          token: ${{ secrets.VAULT_API_TOKEN }}
           secrets: |
-            secret/data/linode_kubernetes_api_token LINODE_KUBERNETES_API_TOKEN
+            secret/data/github_action_linode_terraform LINODE_KUBERNETES_API_TOKEN ;
+            secret/data/github_action_linode_terraform CONSUL_API_TOKEN 
       - uses: hashicorp/setup-terraform@v2
       - name: Terraform Init
-        run: terraform init
+        run: CONSUL_HTTP_TOKEN=${{ env.CONSUL_API_TOKEN }} terraform init
       - name: Terraform Format
         run: terraform fmt -check
       - name: Terraform Plan
         run: TF_VAR_LINODE_KUBERNETES_API_TOKEN=${{ env.LINODE_KUBERNETES_API_TOKEN }} terraform plan -input=false -var-file="terraform.tfvars"
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: TF_VAR_LINODE_KUBERNETES_API_TOKEN=${{ env.LINODE_KUBERNETES_API_TOKEN }} terraform apply -auto-approve -input=false -var-file="terraform.tfvars"
+        run: CONSUL_HTTP_TOKEN=${{ env.CONSUL_API_TOKEN }} TF_VAR_LINODE_KUBERNETES_API_TOKEN=${{ env.LINODE_KUBERNETES_API_TOKEN }} terraform apply -auto-approve -input=false -var-file="terraform.tfvars"
