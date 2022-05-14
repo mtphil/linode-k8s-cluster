@@ -21,7 +21,7 @@ jobs:
           tlsSkipVerify: true
           token: \${{ secrets.VAULT_LINODE_API_KEY_TOKEN }}
           secrets: |
-            secret/data/linode_kubernetes_api_token LINODE_KUBERNETES_API_TOKEN
+            secret/linode_kubernetes_api_token LINODE_KUBERNETES_API_TOKEN
       - uses: hashicorp/setup-terraform@v2
       - name: Terraform Init
         run: terraform init
