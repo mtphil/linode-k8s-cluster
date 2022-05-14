@@ -19,7 +19,7 @@ provider "linode" {
   token = var.LINODE_KUBERNETES_API_TOKEN
 }
 
-resource "linode_lke_cluster" "foobar" {
+resource "linode_lke_cluster" "k8s_cluster" {
   k8s_version = var.k8s_version
   label       = var.label
   region      = var.region
@@ -35,22 +35,22 @@ resource "linode_lke_cluster" "foobar" {
 }
 
 output "kubeconfig" {
-  value     = linode_lke_cluster.foobar.kubeconfig
+  value     = linode_lke_cluster.k8s_cluster.kubeconfig
   sensitive = true
 }
 
 output "apit_endpoints" {
-  value = linode_lke_cluster.foobar.api_endpoints
+  value = linode_lke_cluster.k8s_cluster.api_endpoints
 }
 
 output "status" {
-  value = linode_lke_cluster.foobar.status
+  value = linode_lke_cluster.k8s_cluster.status
 }
 
 output "id" {
-  value = linode_lke_cluster.foobar.id
+  value = linode_lke_cluster.k8s_cluster.id
 }
 
 output "pool" {
-  value = linode_lke_cluster.foobar.pool
+  value = linode_lke_cluster.k8s_cluster.pool
 }
