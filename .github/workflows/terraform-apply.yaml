@@ -4,6 +4,9 @@ on:
     branches:
     - main
   pull_request:
+  release:
+    actions:
+    - published
 
 permissions:
   contents: read
@@ -33,5 +36,5 @@ jobs:
       - name: Terraform Plan
         run: CONSUL_HTTP_TOKEN=${{ env.CONSUL_API_TOKEN }} TF_VAR_LINODE_KUBERNETES_API_TOKEN=${{ env.LINODE_KUBERNETES_API_TOKEN }} terraform plan -lock=false -input=false -var-file="terraform.tfvars"
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main' && github.event_name == 'release'
         run: CONSUL_HTTP_TOKEN=${{ env.CONSUL_API_TOKEN }} TF_VAR_LINODE_KUBERNETES_API_TOKEN=${{ env.LINODE_KUBERNETES_API_TOKEN }} terraform apply -lock=false -auto-approve -input=false -var-file="terraform.tfvars"
