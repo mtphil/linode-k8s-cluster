@@ -33,4 +33,4 @@ jobs:
         run: TF_VAR_LINODE_KUBERNETES_API_TOKEN=${{ env.LINODE_KUBERNETES_API_TOKEN }} terraform plan -input=false -var-file="terraform.tfvars"
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply -auto-approve -input=false -var-file="terraform.tfvars"
+        run: TF_VAR_LINODE_KUBERNETES_API_TOKEN=${{ env.LINODE_KUBERNETES_API_TOKEN }} terraform apply -auto-approve -input=false -var-file="terraform.tfvars"
