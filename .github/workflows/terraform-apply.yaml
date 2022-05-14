@@ -2,7 +2,7 @@ name: deploy_terraform_to_linode
 on:   
   pull_request:
   release:
-    types: [published]
+    types: [released]
 
 permissions:
   contents: read
