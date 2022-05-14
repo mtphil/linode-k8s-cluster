@@ -3,11 +3,6 @@ variable "LINODE_KUBERNETES_API_TOKEN" {
   type        = string
 }
 
-variable "CONSUL_API_TOKEN" {
-    description = "Consul API Token"
-    type = string
-}
-
 variable "k8s_version" {
   description = "The Kubernetes version to use for this cluster. (required)"
   default     = "1.23"
