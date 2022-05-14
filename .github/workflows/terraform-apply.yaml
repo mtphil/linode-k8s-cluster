@@ -1,8 +1,5 @@
 name: deploy_terraform_to_linode
 on:   
-  push:
-    branches:
-    - main
   pull_request:
   release:
     actions:
