@@ -36,5 +36,5 @@ jobs:
       - name: Terraform Plan
         run: CONSUL_HTTP_TOKEN=${{ env.CONSUL_API_TOKEN }} TF_VAR_LINODE_KUBERNETES_API_TOKEN=${{ env.LINODE_KUBERNETES_API_TOKEN }} terraform plan -lock=false -input=false -var-file="terraform.tfvars"
       - name: Terraform Apply
-        if: github.event_name == 'release'
+        if: github.event_name == 'release' && github.event.action == 'released'
         run: CONSUL_HTTP_TOKEN=${{ env.CONSUL_API_TOKEN }} TF_VAR_LINODE_KUBERNETES_API_TOKEN=${{ env.LINODE_KUBERNETES_API_TOKEN }} terraform apply -lock=false -auto-approve -input=false -var-file="terraform.tfvars"
