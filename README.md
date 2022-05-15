@@ -6,9 +6,9 @@ This repository contains:
 
 1) the minimum `Terraform` scaffolding necessary to spin up a `Kubernetes` cluster on `Linode`.
 
-1) a `Makefile` with a suite of commands for creating, and tearing down, a `Kubernetes` cluster on Linode via these `.tf` files on a local machine.
+2) a `Makefile` with a suite of commands for creating, and tearing down, a `Kubernetes` cluster on Linode via these `.tf` files on a local machine.
 
-2) a Github Action Workflow which runs `terraform apply` on this repository's `.tf` files when a new `Release` is published, thus either creating a new or updating a pre-existing `Kubernetes` cluster on `Linode` with that `Release`'s changes.
+3) a Github Action Workflow which runs `terraform apply` on this repository's `.tf` files when a new `Release` is published, thus either creating a new or updating a pre-existing `Kubernetes` cluster on `Linode` with that `Release`'s changes.
 
 ## Makefile
 
