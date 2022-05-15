@@ -3,3 +3,5 @@ lke-cluster-config.yaml
 *.sh
 .env
 .vscode
+creds
+credentials
