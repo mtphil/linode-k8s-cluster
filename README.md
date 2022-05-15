@@ -7,11 +7,17 @@ The Makefile contains all necessary commands to create a k8s cluster locally whe
 Required environment variables:
 
 `VAULT_ADDR`
+
 `VAULT_NAMESPACE`
+
 `VAULT_TOKEN`
+
 `CONSUL_HTTP_TOKEN`
+
 `TF_VAR_LINODE_KUBERNETES_API_TOKEN`
+
 `KUBECONFIG`
+
 `GH_TOKEN`
 
 It also contains commands to list all releases on Github, as well as publishing a new release, which triggers a Github Action Workflow on the terraform files included in this repository.
