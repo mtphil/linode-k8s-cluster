@@ -68,8 +68,9 @@ jobs:
         run: terraform apply -lock=false -auto-approve -input=false -var-file="terraform.tfvars"
       - run: terraform output kubeconfig | tr -d '"' > kube_config_base64
       - run: cat kube_config_base64
+      - run: sed -i '/^$/d' kube_config_base64
+      - run: cat kube_config_base64
       - run: cat kube_config_base64 | base64 -d > kubeconfig
-      - run: sed -i '/^$/d' kubeconfig
       - run: cat kubeconfig
       - name: Persist kubeconfig via actions/upload-artifact  
         uses: actions/upload-artifact@v3
