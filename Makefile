@@ -39,8 +39,6 @@ kubectl_apply_emissary:
 	kubectl apply -f https://app.getambassador.io/yaml/emissary/2.2.2/emissary-crds.yaml
 	kubectl wait --timeout=90s --for=condition=available deployment emissary-apiext -n emissary-system
 	helm install -n emissary --create-namespace emissary-ingress datawire/emissary-ingress && kubectl rollout status  -n emissary deployment/emissary-ingress -w
-	kubectl apply -f k8s_yaml/emissary_host.yaml
-	kubectl apply -f k8s_yaml/emissary_listener.yaml
 	kubectl apply -f k8s_yaml/emissary_crd_mapping.yaml
 kubectl_apply_argocd:
 	kubectl create namespace argocd
