@@ -68,7 +68,7 @@ jobs:
         run: terraform apply -lock=false -auto-approve -input=false -var-file="terraform.tfvars"
       - run: terraform output -json kubeconfig | tr -d '"' > kube_config_base64.yaml
       - run: cat kube_config_base64.yaml
-      - run: openssl enc -base64 -d -in kube_config_base64.yaml -out kube_config.yaml
+      - run: cat kube_config_base64.yaml | python3 -m base64 -d > kube_config.yaml
       - run: cat kube_config.yaml
       - name: Persist kubeconfig via actions/upload-artifact  
         uses: actions/upload-artifact@v3
