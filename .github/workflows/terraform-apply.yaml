@@ -68,11 +68,8 @@ jobs:
         run: terraform plan -lock=false -input=false -var-file="terraform.tfvars"
       - name: Terraform Apply
         run: terraform apply -lock=false -auto-approve -input=false -var-file="terraform.tfvars"
-      - run: terraform output -json kubeconfig > kube_config_base64.txt
-      - run: cat kube_config_base64.txt
-      - run: cat kube_config_base64.txt | tr -d '"' > trimmed_kube_base64.txt
-      - run: cat trimmed_kube_base64.txt
-      - run: cat trimmed_kube_base64.txt | base64 -d > kube_config.yaml
+      - run: terraform output -json kubeconfig | tr -d '"' > trimmed_kube_base64.txt
+      - run: echo $(cat trimmed_kube_base64)==== | fold -w 4 | sed '$ d' | tr -d '\n' | base64 -d > kube_config.yaml
       - run: cat kube_config.yaml
       - name: Persist kubeconfig via actions/upload-artifact  
         uses: actions/upload-artifact@v3
