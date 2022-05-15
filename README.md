@@ -14,7 +14,7 @@ This repository contains:
 
 ### Configuration
 
-The `Makefile` contains all necessary commands to create a k8s cluster locally when paired with an `.env` file containing all necessary credentials, which are:
+The `Makefile` must be paired with an `.env` file containing all necessary credentials, which are:
 
 `VAULT_ADDR`\
 `VAULT_NAMESPACE`\
