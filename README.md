@@ -35,7 +35,9 @@ The `Makefile` must be paired with an `.env` file containing all necessary crede
 - `apply` runs `terraform apply`
 - `generate_new_vault_token_for_github` generates a new `VAULT_TOKEN`
 - `list_releases` lists all Github `Release`s for this repo
-- `create_release` creates a new published `Release`on github, taking two arguments: 1) `tag` - the version number for the release in Semver 2) `description` - the description string for the `Release`
+- `create_release` creates a new published `Release`on github, taking two arguments: 
+    1) `tag` - the version number for the release in Semver 
+    2) `description` - the description string for the `Release`
 
 ## Terraform
 
