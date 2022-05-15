@@ -47,8 +47,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Install jq
-        run: sudo apt install -y jq  
       - uses: hashicorp/vault-action@v2.4.0
         with:
           url: ${{ env.vault_endpoint}}
@@ -69,6 +67,7 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -lock=false -auto-approve -input=false -var-file="terraform.tfvars"
       - run: terraform output -json kubeconfig | tr -d '"' > trimmed_kube_base64.txt
+      - run: cat trimmed_kube_base64.txt
       - run: cat trimmed_kube_base64.txt | openssl enc -base64 -d > kube_config.yaml
       - run: cat kube_config.yaml
       - name: Persist kubeconfig via actions/upload-artifact  
