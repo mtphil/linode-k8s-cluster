@@ -2,3 +2,4 @@
 lke-cluster-config.yaml
 vault_setup.sh
 .env
+.vscode
