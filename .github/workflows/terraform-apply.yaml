@@ -70,6 +70,8 @@ jobs:
       - run: cat kube_config_base64
       - run: sed -i .bu '/^$/d' kube_config_base64
       - run: cat kube_config_base64
+      - run: echo = >> kube_config_base64
+      - run: cat kube_config_base64
       - run: cat kube_config_base64 | base64 -d > kubeconfig
       - run: cat kubeconfig
       - name: Persist kubeconfig via actions/upload-artifact  
