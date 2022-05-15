@@ -41,7 +41,7 @@ jobs:
   deploy_terraform_to_linode:
     needs: lint_and_format_pr
     name: deploy_terraform_to_linode
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     env:
       vault_endpoint: https://vault-cluster.vault.f7138e83-ed41-4970-8209-2d60a69c6a0f.aws.hashicorp.cloud:8200
     steps:
@@ -68,7 +68,6 @@ jobs:
         run: terraform apply -lock=false -auto-approve -input=false -var-file="terraform.tfvars"
       - run: terraform output -json kubeconfig | tr -d '"' > kube_config_base64.yaml
       - run: cat kube_config_base64.yaml
-      - run: echo '==' >> kube_config_base64.yaml
       - run: cat kube_config_base64.yaml | python3 -m base64 -d > kube_config.yaml
       - run: cat kube_config.yaml
       - name: Persist kubeconfig via actions/upload-artifact  
