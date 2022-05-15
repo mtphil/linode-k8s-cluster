@@ -69,7 +69,9 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -lock=false -auto-approve -input=false -var-file="terraform.tfvars"
       - name: Save kubeconfig to disk
-        run: terraform output -json | jq '.kubeconfig.value' | tr -d '"' > base64_kubeconfig.yaml
+      - run : terraform output -json
+      - run: terraform output -json | jq '.kubeconfig.value' 
+      - run: terraform output -json | jq '.kubeconfig.value' | tr -d '"' > base64_kubeconfig.yaml
       - run: echo $(cat base64_kubeconfig.yaml)
       - run: echo $(cat base64_kubeconfig.yaml | base64 -d)
       - run: echo $(cat base64_kubeconfig.yaml) | base64 -d > kubeconfig.yaml  
