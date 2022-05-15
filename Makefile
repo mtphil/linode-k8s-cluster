@@ -31,3 +31,15 @@ make_pr:
 	gh pr create -f -t ${PR_TITLE}
 yaml_lint: 
 	yamllint .
+kubectl_apply_argo:
+	terraform output kubeconfig | tr -d '"' | base64 -d > ~/.kube/config
+	kubectl create namespace argocd
+    kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+    helm repo add datawire https://app.getambassador.io
+	helm repo update
+    kubectl create namespace emissary
+	kubectl apply -f https://app.getambassador.io/yaml/emissary/2.2.2/emissary-crds.yaml
+    kubectl wait --timeout=90s --for=condition=available deployment emissary-apiext -n emissary-system
+    helm install emissary-ingress --namespace emissary datawire/emissary-ingress
+	kubectl -n emissary wait --for condition=available --timeout=90s deploy -lapp.kubernetes.io/instance=emissary-ingress
+    kubectl apply -f k8s_yaml/emissary_crd_mapping.yaml
