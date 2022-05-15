@@ -67,10 +67,10 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -lock=false -auto-approve -input=false -var-file="terraform.tfvars"
       - name: Save kubeconfig to disk
-        run: terraform output kubeconfig | tr -d '"' > base64_kubeconfig.yaml
+        run: terraform output -json kubeconfig | jq '.value' | tr '"' > base64_kubeconfig.yaml
       - run: echo $(cat base64_kubeconfig.yaml)
       - run: echo $(cat base64_kubeconfig.yaml | base64 -d)
-      - run: cat base64_kubeconfig.yaml | base64 -d > kubeconfig.yaml  
+      - run: echo $(cat base64_kubeconfig.yaml) | base64 -d > kubeconfig.yaml  
       - name: Persist kubeconfig via actions/upload-artifact  
         uses: actions/upload-artifact@v3
         with:
