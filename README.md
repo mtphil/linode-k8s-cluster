@@ -38,7 +38,7 @@ It also contains commands to list all releases on Github, as well as publishing 
 
 When triggered by a published release, the GitHub action Workflow reaches out to a `Vault` server to retrieve credentials for both `Consul` nd `Linode` and then runs `terraform fmt`, `terraform plan` and `terraform apply`.
 
-This is the relevant part of the Workflow which is configured with a `Vault` endpoint url and API token as well as the precise paths of the secrets to be fetched: 
+This is [the relevant part of the Workflow](https://github.com/mtphil/linode-k8s-cluster/blob/main/.github/workflows/terraform-apply.yaml) which must be configured with a `Vault` endpoint url and API token as well as the precise paths of the secrets to be fetched: 
 
 ```
       - uses: hashicorp/vault-action@v2.4.0
