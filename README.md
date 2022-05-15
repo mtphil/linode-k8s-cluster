@@ -26,15 +26,15 @@ The `Makefile` must be paired with an `.env` file containing all necessary crede
 
 ### Commands 
 
-- `init` runs `terraform init`\
-- `terraform_fmt` runs `terraform fmt`\
-- `plan_destroy` runs `terraform plan -destroy`\
-- `destroy` runs `terraform destroy`\
-- `get_kube_config` gets the kubeconfig file for a newly created `Kubernetes` cluster\
-- `plan` runs `terraform plan`\
-- `apply` runs `terraform apply`\
-- `generate_new_vault_token_for_github` generates a new `VAULT_TOKEN`\
-- `list_releases` lists all Github `Release`s for this repo\
+- `init` runs `terraform init`
+- `terraform_fmt` runs `terraform fmt`
+- `plan_destroy` runs `terraform plan -destroy`
+- `destroy` runs `terraform destroy`
+- `get_kube_config` gets the kubeconfig file for a newly created `Kubernetes` cluster
+- `plan` runs `terraform plan`
+- `apply` runs `terraform apply`
+- `generate_new_vault_token_for_github` generates a new `VAULT_TOKEN`
+- `list_releases` lists all Github `Release`s for this repo
 - `create_release` creates a new published `Release`on github, taking two arguments: 1) `tag` - the version number for the release in Semver 2) `description` - the description string for the `Release`
 
 ## Terraform
