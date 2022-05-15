@@ -5,6 +5,8 @@ endif
 
 init: 
 	terraform init -lock=false -input=false
+terraform_fmt:
+	terraform fmt -check	
 plan_destroy:
 	terraform plan -destroy -lock=false -input=false -var-file='terraform.tfvars'
 destroy:
