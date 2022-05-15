@@ -2,13 +2,17 @@
 
 ## General
 
-This repository contains both:
+This repository contains:
 
-1) a `Makefile` with a suite of commands suited to creating, and tearing down, a `Kubernetes` cluster on Linode via `Terraform`.
+1) the minimum `Terraform` scaffolding necessary to spin up a `Kubernetes` cluster on `Linode`.
 
-2) a Github Action Workflow which runs `terraform apply` on this repository's `.tf` files when a new `Release` is published, thus either creating a new or updating a pre-existing `Kubernetes` cluster on `Linode` with changes.
+1) a `Makefile` with a suite of commands for creating, and tearing down, a `Kubernetes` cluster on Linode via these `.tf` files on a local machine.
+
+2) a Github Action Workflow which runs `terraform apply` on this repository's `.tf` files when a new `Release` is published, thus either creating a new or updating a pre-existing `Kubernetes` cluster on `Linode` with that `Release`'s changes.
 
 ## Makefile
+
+### Configuration
 
 The `Makefile` contains all necessary commands to create a k8s cluster locally when paired with an `.env` file containing all necessary credentials, which are:
 
@@ -20,7 +24,18 @@ The `Makefile` contains all necessary commands to create a k8s cluster locally w
 `KUBECONFIG`\
 `GH_TOKEN`
 
-It also contains commands to list all releases on Github, as well as publishing a new `Release`, which triggers a Github Action Workflow on the terraform files included in this repository.
+### Commands 
+
+`init` runs `terraform init`
+`terraform_fmt` runs `terraform fmt`
+`plan_destroy` runs `terraform plan -destroy`
+`destroy` runs `terraform destroy`
+`get_kube_config` gets the kubeconfig file for a newly created `Kubernetes` cluster
+`plan` runs `terraform plan`
+`apply` runs `terraform apply`
+`generate_new_vault_token_for_github` generates a new `VAULT_TOKEN`
+`list_releases` lists all Github `Release`s for this repo
+`create_release` creates a new published `Release`on github, taking two arguments: 1) `tag` - the version number for the release in Semver 2) `description` - the description string for the `Release`
 
 ## Terraform
 
