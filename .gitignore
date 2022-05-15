@@ -1,5 +1,5 @@
 .terraform*
 lke-cluster-config.yaml
-vault_setup.sh
+*.sh
 .env
 .vscode
