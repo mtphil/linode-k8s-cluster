@@ -66,15 +66,16 @@ jobs:
         run: terraform plan -lock=false -input=false -var-file="terraform.tfvars"
       - name: Terraform Apply
         run: terraform apply -lock=false -auto-approve -input=false -var-file="terraform.tfvars"
-      - run: terraform output kubeconfig | tr -d '"' > kube_config_base64.yaml
-      - run: cat kube_config_base64.yaml
-      - run: cat kube_config_base64.yaml | base64 -d > kube_config.yaml
-      - run: cat kube_config.yaml
+      - run: terraform output kubeconfig | tr -d '"' > kube_config_base64
+      - run: cat kube_config_base64
+      - run: cat kube_config_base64 | base64 -d > kubeconfig
+      - run: sed -i '/^$/d' kubeconfig
+      - run: cat kubeconfig
       - name: Persist kubeconfig via actions/upload-artifact  
         uses: actions/upload-artifact@v3
         with:
           name: kubeconfig
-          path: kubeconfig.yaml
+          path: kubeconfig
 
   kubectl_apply:
     needs: deploy_terraform_to_linode
