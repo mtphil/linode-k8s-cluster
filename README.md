@@ -1,5 +1,13 @@
 # linode-k8s-cluster
 
+## General
+
+This repository contains both:
+
+1) a Makefile with a suite of commands suited to creating, and tearing down, a Kubernetes cluster on Linode via Terraform
+
+2) a Github Action Workflow which runs `terraform apply` on this repository's terraform files when a new Release is published, thus either creating a new or updating a pre-existing Kubernetes cluster on Linode with changes.
+
 ## Makefile
 
 The Makefile contains all necessary commands to create a k8s cluster locally when paired with an `.env` file containing all necessary credentials.
