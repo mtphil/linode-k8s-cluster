@@ -54,17 +54,17 @@ jobs:
           namespace: admin/yoyodynecorp
           token: ${{ secrets.VAULT_API_TOKEN }}
           secrets: |
-            secret/data/github_action_linode_terraform LINODE_KUBERNETES_API_TOKEN ;
-            secret/data/github_action_linode_terraform CONSUL_API_TOKEN 
+            secret/data/github_action_linode_terraform TF_VAR_LINODE_KUBERNETES_API_TOKEN ;
+            secret/data/github_action_linode_terraform CONSUL_HTTP_TOKEN 
       - uses: hashicorp/setup-terraform@v2
       - name: Terraform Init
         run: CONSUL_HTTP_TOKEN=${{ env.CONSUL_API_TOKEN }} terraform init -lock=false
       - name: Terraform Format
         run: terraform fmt -check
       - name: Terraform Plan
-        run: CONSUL_HTTP_TOKEN=${{ env.CONSUL_API_TOKEN }} TF_VAR_LINODE_KUBERNETES_API_TOKEN=${{ env.LINODE_KUBERNETES_API_TOKEN }} terraform plan -lock=false -input=false -var-file="terraform.tfvars"
+        run: terraform plan -lock=false -input=false -var-file="terraform.tfvars"
       - name: Terraform Apply
-        run: CONSUL_HTTP_TOKEN=${{ env.CONSUL_API_TOKEN }} TF_VAR_LINODE_KUBERNETES_API_TOKEN=${{ env.LINODE_KUBERNETES_API_TOKEN }} terraform apply -lock=false -auto-approve -input=false -var-file="terraform.tfvars" && echo $(terraform output kubeconfig | tr -d '"')
+        run: terraform apply -lock=false -auto-approve -input=false -var-file="terraform.tfvars" && echo $(terraform output kubeconfig | tr -d '"')
       - name: Persist kubeconfig
         uses: actions/upload-artifact@v3
         with:
@@ -100,4 +100,4 @@ jobs:
       - name: Install Emissary
         run: helm install emissary-ingress --namespace emissary datawire/emissary-ingress && kubectl -n emissary wait --for condition=available --timeout=90s deploy -lapp.kubernetes.io/instance=emissary-ingress
       - name: Add Argo-Emissary CRD mapping
-        run: kubectl apply -f k8s_yaml/emissary_crd_mapping.yaml
+        run: kubectl apply -f k8s_yaml/emissary_crd_mapping.yaml 

@@ -18,6 +18,7 @@ plan:
 	terraform plan -lock=false -input=false -var-file="terraform.tfvars"
 apply:
 	terraform apply  -lock=false -auto-approve -input=false -var-file="terraform.tfvars"
+	rm -f ./lke-cluster-config.yaml
 	terraform output kubeconfig | tr -d '"' | base64 -d > lke-cluster-config.yaml
 generate_new_vault_token_for_github:
 	vault token create -policy=github_actions_reader -format json -namespace admin/yoyodynecorp | jq -r ".auth.client_token"
