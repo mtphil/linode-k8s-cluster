@@ -68,9 +68,10 @@ jobs:
         run: terraform plan -lock=false -input=false -var-file="terraform.tfvars"
       - name: Terraform Apply
         run: terraform apply -lock=false -auto-approve -input=false -var-file="terraform.tfvars"
-      - run: terraform output -json > kube_config.json
-      - run: cat kube_config.json
-      - run: jq '.kubeconfig.value' kube_config.json > kube_config_base64.txt
+      - run: terraform output -json > terraform_output.json
+      - run: cat terraform_output.json
+      - run: file terraform_output.json
+      - run: jq '.kubeconfig.value' terraform_output.json > kube_config_base64.txt
       - run: cat kube_config_base64.txt
       - run: cat kube_config_base64.txt | tr -d '"' > trimmed_kube_base64.txt
       - run: cat trimmed_kube_base64.txt
