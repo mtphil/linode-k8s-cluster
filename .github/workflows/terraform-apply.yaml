@@ -69,7 +69,7 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -lock=false -auto-approve -input=false -var-file="terraform.tfvars"
       - run: terraform output -json kubeconfig | tr -d '"' > trimmed_kube_base64.txt
-      - run: echo $(cat trimmed_kube_base64.txt)==== | fold -w 4 | sed '$ d' | tr -d '\n' | base64 -d > kube_config.yaml
+      - run: cat trimmed_kube_base64.txt | openssl enc -base64 -d > kube_config.yaml
       - run: cat kube_config.yaml
       - name: Persist kubeconfig via actions/upload-artifact  
         uses: actions/upload-artifact@v3
