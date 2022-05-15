@@ -65,8 +65,9 @@ jobs:
       - name: Terraform Plan
         run: terraform plan -lock=false -input=false -var-file="terraform.tfvars"
       - name: Terraform Apply
-        run: terraform apply -lock=false -auto-approve -input=false -var-file="terraform.tfvars" && echo $(terraform output kubeconfig | tr -d '"')
-      - name: Persist kubeconfig
+        run: terraform apply -lock=false -auto-approve -input=false -var-file="terraform.tfvars"
+      - name: Save kubeconfig to disk
+        run: echo $(terraform output kubeconfig | tr -d '"' | base64 -di) && terraform output kubeconfig | tr -d '"' | base64 -di > kubeconfig.yaml  
         uses: actions/upload-artifact@v3
         with:
           name: kubeconfig

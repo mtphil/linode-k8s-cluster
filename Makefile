@@ -29,3 +29,5 @@ create_release:
   		-d '{"tag_name":"${tag}","target_commitish":"main","name":"${tag}", "body":"${description}","draft":false,"prerelease":false,"generate_release_notes":false}'
 make_pr:
 	gh pr create -f -t ${PR_TITLE}
+yaml_lint: 
+	yamllint .
