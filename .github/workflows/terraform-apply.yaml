@@ -70,7 +70,7 @@ jobs:
       - run: cat kube_config_base64
       - run: sed -i .bu '/^$/d' kube_config_base64
       - run: PAYLOAD=$(cat kube_config_base64)
-      - run: echo -n "${PAYLOAD}=" >> kube_config_base64
+      - run: printf "=" >> kube_config_base64
       - run: cat kube_config_base64
       - run: cat kube_config_base64 | base64 -d > kubeconfig
       - run: cat kubeconfig
