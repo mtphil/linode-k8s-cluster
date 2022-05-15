@@ -21,7 +21,7 @@ apply:
 	rm -f ./lke-cluster-config.yaml
 	terraform output kubeconfig | tr -d '"' | base64 -d > lke-cluster-config.yaml
 generate_new_vault_token_for_github:
-	vault token create -policy=github_actions_reader -format json -namespace admin/yoyodynecorp | jq -r ".auth.client_token"
+	vault token create -policy=github_actions_reader -format json -ttl 72h -namespace admin/yoyodynecorp | jq -r ".auth.client_token"
 list_releases:
 	curl -u mtphil:${GH_TOKEN} -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/mtphil/linode-k8s-cluster/releases | jq '.[].name'
 create_release:
@@ -43,3 +43,5 @@ kubectl_apply_emissary:
 kubectl_apply_argocd:
 	kubectl create namespace argocd
 	kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl_port_forward_argocd:
+	kubectl port-forward svc/argocd-server -n argocd 8080:443
