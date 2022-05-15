@@ -38,6 +38,7 @@ jobs:
         run: CONSUL_HTTP_TOKEN=${{ env.CONSUL_API_TOKEN }} TF_VAR_LINODE_KUBERNETES_API_TOKEN=${{ env.LINODE_KUBERNETES_API_TOKEN }} terraform plan -lock=false -input=false -var-file="terraform.tfvars"
   
   deploy_terraform_to_linode:
+    needs: lint_and_format_pr
     if: github.event_name == 'release' && github.event.action == 'released'
     name: deploy_terraform_to_linode
     runs-on: ubuntu-latest
