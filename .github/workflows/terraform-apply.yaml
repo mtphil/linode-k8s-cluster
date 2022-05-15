@@ -1,11 +1,12 @@
+---
 name: deploy_terraform_to_linode
-on:   
+on:
   pull_request:
   release:
     types: [released]
   push:
-   branches:
-      - main  
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -27,16 +28,16 @@ jobs:
           namespace: admin/yoyodynecorp
           token: ${{ secrets.VAULT_API_TOKEN }}
           secrets: |
-            secret/data/github_action_linode_terraform LINODE_KUBERNETES_API_TOKEN ;
-            secret/data/github_action_linode_terraform CONSUL_API_TOKEN 
+            secret/data/github_action_linode_terraform TF_VAR_LINODE_KUBERNETES_API_TOKEN ;
+            secret/data/github_action_linode_terraform CONSUL_HTTP_TOKEN
       - uses: hashicorp/setup-terraform@v2
       - name: Terraform Init
-        run: CONSUL_HTTP_TOKEN=${{ env.CONSUL_API_TOKEN }} terraform init -lock=false
+        run: terraform init -lock=false
       - name: Terraform Format
         run: terraform fmt -check
       - name: Terraform Plan
-        run: CONSUL_HTTP_TOKEN=${{ env.CONSUL_API_TOKEN }} TF_VAR_LINODE_KUBERNETES_API_TOKEN=${{ env.LINODE_KUBERNETES_API_TOKEN }} terraform plan -lock=false -input=false -var-file="terraform.tfvars"
-  
+        run: terraform plan -lock=false -input=false -var-file="terraform.tfvars"
+
   deploy_terraform_to_linode:
     needs: lint_and_format_pr
     name: deploy_terraform_to_linode
@@ -55,10 +56,10 @@ jobs:
           token: ${{ secrets.VAULT_API_TOKEN }}
           secrets: |
             secret/data/github_action_linode_terraform TF_VAR_LINODE_KUBERNETES_API_TOKEN ;
-            secret/data/github_action_linode_terraform CONSUL_HTTP_TOKEN 
+            secret/data/github_action_linode_terraform CONSUL_HTTP_TOKEN
       - uses: hashicorp/setup-terraform@v2
       - name: Terraform Init
-        run: CONSUL_HTTP_TOKEN=${{ env.CONSUL_API_TOKEN }} terraform init -lock=false
+        run: terraform init -lock=false
       - name: Terraform Format
         run: terraform fmt -check
       - name: Terraform Plan
@@ -76,28 +77,28 @@ jobs:
     name: kubectl_apply
     if: github.event_name == 'release' && github.event.action == 'released'
     runs-on: ubuntu-latest
-    steps: 
+    steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Get kubeconfig from cache
         uses: actions/download-artifact@v3
         with:
           name: kubeconfig
-      - name: Create ArgoCD namespace 
+      - name: Create ArgoCD namespace
         run: kubectl create namespace argocd
       - name: Kubectl apply argo yaml
         run: kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-      - name: Use helm 
+      - name: Use helm
         uses: azure/setup-helm@v1
       - name: Use kubectl
-        uses: azure/setup-kubectl@v2.0  
+        uses: azure/setup-kubectl@v2.0
       - name: Add Emissary helm repo
         run: helm repo add datawire https://app.getambassador.io && helm repo update
-      - name: Install Emissary CRDs  
+      - name: Install Emissary CRDs
         run: kubectl create namespace emissary && kubectl apply -f https://app.getambassador.io/yaml/emissary/2.2.2/emissary-crds.yaml
       - name: Wait for CRDs to be installed
         run: kubectl wait --timeout=90s --for=condition=available deployment emissary-apiext -n emissary-system
       - name: Install Emissary
         run: helm install emissary-ingress --namespace emissary datawire/emissary-ingress && kubectl -n emissary wait --for condition=available --timeout=90s deploy -lapp.kubernetes.io/instance=emissary-ingress
       - name: Add Argo-Emissary CRD mapping
-        run: kubectl apply -f k8s_yaml/emissary_crd_mapping.yaml 
+        run: kubectl apply -f k8s_yaml/emissary_crd_mapping.yaml
