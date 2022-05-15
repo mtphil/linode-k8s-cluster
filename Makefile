@@ -19,7 +19,7 @@ plan:
 apply:
 	terraform apply  -lock=false -auto-approve -input=false -var-file="terraform.tfvars"
 	terraform output kubeconfig | tr -d '"' | base64 -d > lke-cluster-config.yaml
-generate_github_token:
+generate_new_vault_token_for_github:
 	vault token create -policy=github_actions_reader -format json -namespace admin/yoyodynecorp | jq -r ".auth.client_token"
 list_releases:
 	curl -u mtphil:${GH_TOKEN} -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/mtphil/linode-k8s-cluster/releases
